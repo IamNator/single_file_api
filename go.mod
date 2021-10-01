@@ -1,5 +1,6 @@
 module github.com/IamNator/single_file_api
 
+// +heroku goVersion go1.16
 go 1.16
 
 require (
