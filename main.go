@@ -2,7 +2,6 @@ package main
 
 import (
   "encoding/json"
-  "github.com/gorilla/schema"
   "gorm.io/driver/mysql"
   "gorm.io/gorm"
   "log"
@@ -11,8 +10,7 @@ import (
 )
 
 type Table struct {
-  Hello  string `json:"hello" schema:"hello"`
-  Name    string `json:"name" schema:"name"`
+  PowerStatus  bool `json:"powerStatus" schema:"powerStatus"`
   gorm.Model
 }
 
@@ -34,13 +32,20 @@ func main(){
   
   http.HandleFunc("/api/add", func (w http.ResponseWriter, r *http.Request){
     var t Table
-    err := schema.NewDecoder().Decode(&t, r.Form)
-    if err != nil {
-      http.Error(w, err.Error(), 400)
+    s := r.FormValue("powerStatus")
+    if s != "0" && s != "1" {
+      http.Error(w, "powerStatus is invalid", 400)
       return
     }
 
-    err = db.Model(Table{}).Where("hello = ?", t.Hello).Updates(&t).FirstOrCreate(&t).First(&t).Error
+    switch s {
+    case "0":
+      t.PowerStatus = false
+    default:
+      t.PowerStatus = true
+    }
+
+    err = db.Model(Table{}).Save(&t).First(&t).Error
     if err != nil {
       http.Error(w, err.Error(), 400)
       return
@@ -51,8 +56,7 @@ func main(){
   
    http.HandleFunc("/api/get", func (w http.ResponseWriter, r *http.Request){
      var t []Table
-
-     err = db.Model(Table{}).Where("hello = ?", r.FormValue("hello")).Find(&t).Error
+     err = db.Model(Table{}).Find(&t).Error
      if err != nil {
        http.Error(w, err.Error(), 400)
        return
