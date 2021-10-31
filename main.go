@@ -23,8 +23,7 @@ func main(){
   //CLEARDB_DATABASE_URL
   dsn := os.Getenv("DSN")
   if dsn == "" {
-   //dsn = "b0c18710b783ac:7e825d69@eu-cdbr-west-01.cleardb.com/heroku_25194f2ea429b61?reconnect=true"
-   dsn = "b0c18710b783ac:7e825d69@tcp(eu-cdbr-west-01.cleardb.com)/heroku_25194f2ea429b61?parseTime=true"
+    panic("DSN not found in environment")
     }
 
   db, err := gorm.Open( "mysql", dsn)
