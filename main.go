@@ -11,9 +11,9 @@ import (
 )
 
 type Table struct {
-  ID        uint `gorm:"primary_key"`
-  PowerStatus  bool `json:"powerStatus" schema:"powerStatus"`
-  CreatedAt time.Time
+  ID        uint `gorm:"primary_key" json:"id"`
+  PowerStatus  bool `json:"power_status" schema:"power_status"`
+  CreatedAt time.Time  `json:"created_at"`
   UpdatedAt time.Time `json:"_"`
   DeletedAt *time.Time `json:"_" sql:"index"`
 }
