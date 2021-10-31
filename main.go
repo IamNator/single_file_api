@@ -81,7 +81,7 @@ func add(db *gorm.DB) func(ctx *gin.Context) {
     w := ctx.Writer
     r := ctx.Request
     var t Table
-    s := r.FormValue("powerStatus")
+    s := r.FormValue("power_status")
     if s != "0" && s != "1" {
       http.Error(w, "powerStatus is invalid", 400)
       return
